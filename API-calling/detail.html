@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Detail</title>
+  <style>
+    body { font-family: sans-serif; background: #f4f7f6; padding: 40px; }
+    .detail-card {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .detail-card img { width: 100%; max-height: 300px; object-fit: contain; }
+    .price { font-size: 1.5rem; color: #2e7d32; font-weight: bold; }
+    .category { text-transform: uppercase; color: #888; font-size: 0.8rem; }
+    .back-btn { text-decoration: none; color: #555; display: inline-block; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="back-btn">⬅ Back to Store</a>
+  
+  <div id="product-detail">
+    <p>Loading Product Details...</p>
+  </div>
+
+  <script>
+    // Step 1: Browser ki URL se Product ID pakdo (Query Practice!)
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id'); // URL mein se '?id=2' ki value 2 nikaali
+
+    const container = document.getElementById('product-detail');
+
+    // Step 2: Specific Product API Call karo (ID ke sath)
+    fetch('https://dummyjson.com/products/' + productId)
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function(product) {
+        // Ye Single Object hai, Array nahi hai, toh direct HTML banayenge
+        container.innerHTML = `
+          <div class="detail-card">
+            <span class="category">${product.category}</span>
+            <h1>${product.title}</h1>
+            <img src="${product.thumbnail}" alt="${product.title}">
+            <p>${product.description}</p>
+            <p class="price">$${product.price}</p>
+            <p><strong>Rating:</strong> ⭐ ${product.rating} / 5</p>
+            <p><strong>Stock Left:</strong> ${product.stock} items</p>
+          </div>
+        `;
+      });
+  </script>
+</body>
+</html>

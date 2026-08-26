@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Store</title>
+  <style>
+    /* Clean & Modern UI Grid Styling */
+    body { font-family: 'Poppins', sans-serif; background: #f4f7f6; padding: 20px; }
+    h1 { text-align: center; color: #333; }
+    
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      text-align: center;
+      transition: transform 0.2s ease;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card img { width: 100%; height: 180px; object-fit: contain; border-radius: 8px; }
+    .price { font-weight: bold; color: #2e7d32; font-size: 1.2rem; }
+    .btn {
+      display: inline-block;
+      margin-top: 10px;
+      background: #007bff;
+      color: white;
+      padding: 8px 16px;
+      text-decoration: none;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Our Products Store</h1>
+  <div id="product-list" class="store-grid">
+    <!-- Yahan JavaScript se .map() chal kar cards render honge -->
+  </div>
+
+  <script>
+    // Step 1: Element Select karo
+    const container = document.getElementById('product-list');
+
+    // Step 2: DummyJSON API se Data Fetch karo
+    fetch('https://dummyjson.com/products')
+      .then(function(res) {
+        return res.json();
+      })
+      .then(function(data) {
+        // DummyJSON humesha data ek object ke andar 'products' array mein deta hai!
+        const productsArray = data.products;
+
+        // Step 3: Map chalao aur HTML Cards banao (Jaise humne practice ki thi!)
+        const cardsHTML = productsArray.map(function(product) {
+          return `
+            <div class="card">
+              <img src="${product.thumbnail}" alt="${product.title}">
+              <h3>${product.title}</h3>
+              <p class="price">$${product.price}</p>
+              
+              <!-- URL Parameter: detail.html par Product ID bhej rahe hain -->
+              <a href="detail.html?id=${product.id}" class="btn">View Details</a>
+            </div>
+          `;
+        }).join(''); // array elements ko combine karke ek text banata hai
+
+        // Step 4: DOM mein Render kardo
+        container.innerHTML = cardsHTML;
+      });
+  </script>
+</body>
+</html>
